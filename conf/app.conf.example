@@ -1,0 +1,18 @@
+# Example configuration file for TravelSphere
+# Copy this file to app.conf and adjust locally
+
+appname = TravelSphere
+httpport = 8080
+runmode  = dev
+
+# Session configuration (can be changed per environment)
+sessionon                = true
+sessionprovider          = memory
+sessionname              = travelsphere_session
+sessiongcmaxlifetime     = 3600
+
+# Template directory
+viewspath = views
+
+# Static file mapping
+staticdir = /static:static

@@ -1,10 +1,11 @@
+// SSR page routes - every route here must return text/html.
 package routers
 
 import (
-	"TravelSphere/controllers"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
-func init() {
-    beego.Router("/", &controllers.MainController{})
+// registerSSRRoutes maps browser-navigable URLs to SSR controllers.
+func registerSSRRoutes() {
+	_ = beego.Router
 }
