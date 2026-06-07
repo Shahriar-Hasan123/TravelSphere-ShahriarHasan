@@ -19,7 +19,9 @@
                 </div>
                 <div class="dest-meta-item">
                     <span class="meta-label">REGION</span>
-                    <span class="meta-value">{{.Country.Region}}<br>{{.Country.Subregion}}</span>
+                    <span class="meta-value">
+                        {{.Country.Region}}<br>{{.Country.Subregion}}
+                    </span>
                 </div>
                 <div class="dest-meta-item">
                     <span class="meta-label">CURRENCY</span>
@@ -48,38 +50,92 @@
 
     <!-- Weather + Attractions row -->
     <div class="dest-panels">
-        <!-- Travel weather -->
+        <!-- Travel weather panel -->
         <div class="panel panel-weather">
             <h2 class="panel-title">Travel weather</h2>
             {{if .Weather}}
-                <div class="weather-data">
-                    <p class="weather-temp">{{.Weather.TempC}}&deg;C / {{.Weather.TempF}}&deg;F</p>
+                <!-- Current conditions -->
+                <div class="weather-current">
+                    {{if .Weather.Icon}}
+                    <img src="{{.Weather.Icon}}" alt="{{.Weather.Condition}}"
+                         class="weather-icon">
+                    {{end}}
+                    <p class="weather-temp">
+                        {{printf "%.1f" .Weather.TempC}}&deg;C
+                        / {{printf "%.1f" .Weather.TempF}}&deg;F
+                    </p>
                     <p class="weather-condition">{{.Weather.Condition}}</p>
+                    <p class="weather-city">{{.Weather.City}}</p>
                 </div>
+
+                <!-- Detailed stats -->
+                <div class="weather-stats">
+                    <div class="weather-stat">
+                        <span class="wstat-label">Feels like</span>
+                        <span class="wstat-value">{{printf "%.1f" .Weather.FeelsLikeC}}&deg;C</span>
+                    </div>
+                    <div class="weather-stat">
+                        <span class="wstat-label">Humidity</span>
+                        <span class="wstat-value">{{.Weather.Humidity}}%</span>
+                    </div>
+                    <div class="weather-stat">
+                        <span class="wstat-label">Wind</span>
+                        <span class="wstat-value">{{printf "%.0f" .Weather.WindKph}} km/h</span>
+                    </div>
+                </div>
+
+                <!-- Tomorrow's forecast -->
+                {{if .Weather.Forecast}}
+                <div class="weather-forecast">
+                    <p class="forecast-label">Tomorrow</p>
+                    <div class="forecast-row">
+                        {{if .Weather.Forecast.Icon}}
+                        <img src="{{.Weather.Forecast.Icon}}"
+                             alt="{{.Weather.Forecast.Condition}}"
+                             class="forecast-icon">
+                        {{end}}
+                        <div>
+                            <p class="forecast-condition">{{.Weather.Forecast.Condition}}</p>
+                            <p class="forecast-temps">
+                                {{printf "%.1f" .Weather.Forecast.MaxTempC}}&deg;C
+                                / {{printf "%.1f" .Weather.Forecast.MinTempC}}&deg;C
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+
+                <!-- Travel conditions advice -->
+                <div class="travel-advice">
+                    <p class="advice-label">Travel conditions</p>
+                    <p class="advice-text">{{.Weather.TravelAdvice}}</p>
+                </div>
+
             {{else}}
                 <div class="weather-placeholder">
-                    <p>Weather data is optional. Add
-                        <code>#WEATHERAPI_KEY</code> to your
+                    <p>
+                        Weather data is optional. Add
+                        <code>WEATHERAPI_KEY</code> to your
                         <code>.env</code> file to enable live conditions.
                     </p>
                 </div>
             {{end}}
         </div>
 
-        <!-- Attractions & landmarks -->
+        <!-- Attractions & landmarks panel -->
         <div class="panel panel-attractions">
             <h2 class="panel-title">Attractions &amp; landmarks</h2>
             {{if .Attractions}}
-            <div class="attractions-list">
-                {{range .Attractions}}
-                <div class="attraction-row">
-                    <span class="attraction-name">{{.Name}}</span>
-                    <span class="attraction-tags">
-                        {{range $i, $tag := .Kinds}}{{if $i}},{{end}}{{$tag}}{{end}}
-                    </span>
+                <div class="attractions-list">
+                    {{range .Attractions}}
+                    <div class="attraction-row">
+                        <span class="attraction-name">{{.Name}}</span>
+                        <span class="attraction-tags">
+                            {{range $i, $tag := .Kinds}}{{if $i}},{{end}}{{$tag}}{{end}}
+                        </span>
+                    </div>
+                    {{end}}
                 </div>
-                {{end}}
-            </div>
             {{else}}
                 <p class="no-data">No attractions found for this destination.</p>
             {{end}}

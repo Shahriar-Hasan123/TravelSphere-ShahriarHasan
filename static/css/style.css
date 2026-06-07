@@ -787,3 +787,113 @@ img { display: block; width: 100%; }
 
     .page-title { font-size: 1.4rem; }
 }
+
+/* Weather icon from WeatherAPI */
+.weather-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: .5rem;
+}
+
+.weather-city {
+    font-size: .8rem;
+    color: var(--gray-600);
+    margin-top: .25rem;
+}
+
+/* ── Weather panel detail ─────────────────────────────────────────── */
+.weather-current {
+    margin-bottom: 1rem;
+}
+
+.weather-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    padding: .75rem;
+    background: var(--gray-100);
+    border-radius: var(--radius);
+}
+
+.weather-stat {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+}
+
+.wstat-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+}
+
+.wstat-value {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+/* Tomorrow's forecast */
+.weather-forecast {
+    margin-bottom: 1rem;
+    padding: .75rem;
+    background: var(--gray-100);
+    border-radius: var(--radius);
+}
+
+.forecast-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+}
+
+.forecast-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.forecast-icon {
+    width: 36px;
+    height: 36px;
+}
+
+.forecast-condition {
+    font-size: .85rem;
+    font-weight: 500;
+    margin-bottom: .15rem;
+}
+
+.forecast-temps {
+    font-size: .8rem;
+    color: var(--gray-600);
+}
+
+/* Travel advice */
+.travel-advice {
+    padding: .75rem;
+    background: #eef2ff;
+    border-left: 3px solid var(--indigo);
+    border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.advice-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: var(--indigo);
+    text-transform: uppercase;
+    margin-bottom: .35rem;
+}
+
+.advice-text {
+    font-size: .85rem;
+    color: var(--navy);
+    line-height: 1.5;
+}
