@@ -1,13 +1,41 @@
-// Init is called once from main.go to register all application routes.
+// Init sets up middleware, routes, and static assets.
+
 package routers
 
-import beego "github.com/beego/beego/v2/server/web"
+import (
+	"TravelSphere/filters"
 
-// Init registers SSR page routes, JSON API routes, and static file serving.
+	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/context"
+)
+
 func Init() {
+	registerFilters()
 	registerSSRRoutes()
 	registerAPIRoutes()
 
-	// Serve everything under /static/* from the static/ directory.
 	beego.SetStaticPath("/static", "static")
+}
+
+func registerFilters() {
+	// Request logging.
+	beego.InsertFilter("/*", beego.BeforeRouter,
+		func(ctx *context.Context) { filters.LoggingFilter(ctx) },
+	)
+
+	// Auth for protected SSR routes.
+	beego.InsertFilter("/wishlist", beego.BeforeExec,
+		func(ctx *context.Context) { filters.AuthFilter(ctx) },
+	)
+	beego.InsertFilter("/dashboard", beego.BeforeExec,
+		func(ctx *context.Context) { filters.AuthFilter(ctx) },
+	)
+
+	// Auth for wishlist API.
+	beego.InsertFilter("/api/wishlist", beego.BeforeExec,
+		func(ctx *context.Context) { filters.AuthFilter(ctx) },
+	)
+	beego.InsertFilter("/api/wishlist/*", beego.BeforeExec,
+		func(ctx *context.Context) { filters.AuthFilter(ctx) },
+	)
 }

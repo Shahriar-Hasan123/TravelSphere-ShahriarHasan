@@ -1,17 +1,14 @@
-// WishlistController handles GET /wishlist - protected SSR page
-
+// WishlistController handles GET /wishlist - protected SSR page.
 package controllers
 
 type WishlistController struct {
 	BaseController
 }
 
-// Get renders the wishlist page for authenticated users
+// Get renders the wishlist page. Auth is guaranteed by the filter - no need to check here.
 func (c *WishlistController) Get() {
-	if !c.RequireLogin() {
-		return
-	}
 	c.Data["ActiveNav"] = "wishlist"
+	c.Data["WishlistItems"] = nil
 	c.TplName = "wishlist.tpl"
 	c.Layout = "layout.tpl"
 }

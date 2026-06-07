@@ -14,6 +14,7 @@ func (c *BaseController) Prepare() {
 	username, _ := c.GetSession("username").(string)
 	isLoggedIn := username != ""
 	c.Data["isLoggedIn"] = isLoggedIn
+	c.Data["IsLoggedIn"] = isLoggedIn
 	c.Data["username"] = username
 	if _, exists := c.Data["ActiveNav"]; !exists {
 		c.Data["ActiveNav"] = ""
@@ -22,7 +23,8 @@ func (c *BaseController) Prepare() {
 
 // RequireLogin redirects unauthenticated users to the login page.
 func (c *BaseController) RequireLogin() bool {
-	if !c.Data["isLoggedIn"].(bool) {
+	isLoggedIn, _ := c.Data["isLoggedIn"].(bool)
+	if !isLoggedIn {
 		c.Redirect("/login", 302)
 		return false
 	}

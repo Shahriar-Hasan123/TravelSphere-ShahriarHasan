@@ -25,7 +25,7 @@
 
         <div class="navbar-right">
             {{if .IsLoggedIn}}
-                <span class="nav-greeting">Hi, {{.Username}}</span>
+                <span class="nav-greeting">Hi, {{.username}}</span>
                 <a href="/logout" class="nav-link">Logout</a>
             {{else}}
                 <a href="/login" class="nav-link">Login</a>
