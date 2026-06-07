@@ -15,7 +15,7 @@
                 </div>
                 <div class="dest-meta-item">
                     <span class="meta-label">POPULATION</span>
-                    <span class="meta-value">{{.Country.Population}}</span>
+                    <span class="meta-value">{{.Country.FormattedPop}}</span>
                 </div>
                 <div class="dest-meta-item">
                     <span class="meta-label">REGION</span>
