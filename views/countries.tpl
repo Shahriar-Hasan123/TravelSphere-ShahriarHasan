@@ -7,7 +7,6 @@
         </p>
     </div>
 
-    <!-- Search and filter bar -->
     <div class="filter-bar">
         <div class="filter-group">
             <label class="filter-label">SEARCH</label>
@@ -32,7 +31,6 @@
         </div>
     </div>
 
-    <!-- Country results — AJAX replaces only this container -->
     <div id="country-results" class="country-grid">
         {{range .Countries}}
         <a href="/countries/{{.Slug}}" class="country-card">
@@ -42,7 +40,7 @@
             <div class="country-info">
                 <h3 class="country-name">{{.Name}}</h3>
                 <p><span class="info-label">Capital:</span> {{.Capital}}</p>
-                <p><span class="info-label">Population:</span> {{.Population}}</p>
+                <p><span class="info-label">Population:</span> {{.FormattedPop}}</p>
                 <p><span class="info-label">Currency:</span> {{.Currency}}</p>
                 <p>
                     <span class="info-label">Languages:</span>

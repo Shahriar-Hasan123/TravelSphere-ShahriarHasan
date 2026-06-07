@@ -1,16 +1,21 @@
+// Country DTOs - shaped from REST Countries API responses.
+
 package models
 
-type country struct {
-	Name         string
-	OfficialName string
-	Slug         string
-	Flag         string
-	Capital      string
-	Population   string
-	Region       string
-	Subregion    string
-	Currency     string
-	Language     []string
+// Country represents a single country for listing and detail views.
+type Country struct {
+	Name              string
+	OfficialName      string
+	Slug              string
+	Flag              string
+	Capital           string
+	Population        int64
+	FormattedPop      string   
+	Region            string
+	Subregion         string
+	Currency          string
+	Languages         []string
+	Latlng            []float64 // [latitude, longitude] for OpenTripMap
 }
 
 type FeaturedCountry struct {
