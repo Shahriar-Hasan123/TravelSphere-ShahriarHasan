@@ -23,6 +23,9 @@ func (c *AuthController) ShowLogin() {
 
 	// Check if there is a pending redirect target from the auth filter cookie.
 	redirectTo := c.Ctx.GetCookie("redirect_after_login")
+	if redirectTo == "" {
+		redirectTo = c.GetString("redirect_to")
+	}
 
 	c.Data["RedirectTo"] = redirectTo
 	c.Data["ActiveNav"] = ""

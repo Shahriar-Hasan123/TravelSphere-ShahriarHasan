@@ -90,6 +90,7 @@ func (c *CountryController) Detail() {
 	c.Data["Country"] = country
 	c.Data["Attractions"] = attractions
 	c.Data["Weather"] = weather
+	c.Data["CurrentPath"] = c.Ctx.Request.URL.Path
 	c.Data["ActiveNav"] = "countries"
 	c.TplName = "destination.tpl"
 	c.Layout = "layout.tpl"

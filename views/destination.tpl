@@ -37,16 +37,21 @@
         </div>
     </div>
 
-    <!-- Add to Wishlist — AJAX updates #wishlist-feedback only -->
-    {{if .IsLoggedIn}}
+    <!-- Add to Wishlist — show the guest button as a login redirect when not authenticated. -->
     <div class="wishlist-action">
+        {{if .IsLoggedIn}}
         <button id="add-wishlist-btn" class="btn-wishlist"
-                data-country="{{.Country.Name}}">
+                data-country="{{.Country.Name}}"
+                data-is-logged-in="true">
             Add to Wishlist
         </button>
         <div id="wishlist-feedback" class="wishlist-feedback"></div>
+        {{else}}
+        <a href="/login?redirect_to={{.CurrentPath}}" class="btn-wishlist btn-wishlist-login">
+            Add to Wishlist
+        </a>
+        {{end}}
     </div>
-    {{end}}
 
     <!-- Weather + Attractions row -->
     <div class="dest-panels">

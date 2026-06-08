@@ -1,14 +1,18 @@
-// WishlistController handles GET /wishlist - protected SSR page.
+// WishlistController serves GET /wishlist — protected by AuthFilter.
 package controllers
+
+import "TravelSphere/services"
 
 type WishlistController struct {
 	BaseController
 }
 
-// Get renders the wishlist page. Auth is guaranteed by the filter - no need to check here.
+// Get renders the wishlist page with the current user's saved destinations.
 func (c *WishlistController) Get() {
-	c.Data["ActiveNav"] = "wishlist"
-	c.Data["WishlistItems"] = nil
+	username := c.GetSession("username").(string)
+	items := services.GetWishlistService().GetAll(username)
+	c.Data["ActiveNav"]     = "wishlist"
+	c.Data["WishlistItems"] = items
 	c.TplName = "wishlist.tpl"
-	c.Layout = "layout.tpl"
+	c.Layout  = "layout.tpl"
 }

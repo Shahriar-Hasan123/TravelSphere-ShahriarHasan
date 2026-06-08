@@ -1,3 +1,4 @@
+// models/wishlist.go
 package models
 
 import "time"
@@ -9,11 +10,10 @@ const (
 	StatusVisited WishlistStatus = "Visited"
 )
 
-// WishlistItem represents one saved destination in a user's travel wishlist.
 type WishlistItem struct {
 	ID          string         `json:"id"`
-	CountryName string         `json:"country_name"`
-	Note        string         `json:"note"`
-	Status      WishlistStatus `json:"status"`
+	CountryName string         `json:"CountryName"`
+	Note        string         `json:"Note"`
+	Status      WishlistStatus `json:"Status"`
 	CreatedAt   time.Time      `json:"created_at"`
 }
