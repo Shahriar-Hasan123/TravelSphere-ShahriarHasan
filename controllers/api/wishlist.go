@@ -80,8 +80,8 @@ func (c *WishlistAPIController) Post() {
 	c.ServeJSON()
 }
 
-// Update modifies note and status of an existing entry.
-// PUT /api/wishlist/:id  — body: {note?, status}
+// Update modifies note and status of a single wishlist entry.
+// PUT /api/wishlist/:id — returns only the updated item, not the full list.
 func (c *WishlistAPIController) Update() {
 	id := c.Ctx.Input.Param(":id")
 
@@ -104,7 +104,7 @@ func (c *WishlistAPIController) Update() {
 		return
 	}
 
-	_, ok := services.GetWishlistService().Update(
+	updated, ok := services.GetWishlistService().Update(
 		c.sessionUsername(), id, body.Note, body.Status,
 	)
 	if !ok {
@@ -114,14 +114,13 @@ func (c *WishlistAPIController) Update() {
 		return
 	}
 
-	// Return the full updated list so the client can re-render all rows.
-	items := services.GetWishlistService().GetAll(c.sessionUsername())
-	c.Data["json"] = utils.OKResponse(items)
+	// Return only the updated item — REST convention for PUT on a single resource.
+	c.Data["json"] = utils.OKResponse(updated)
 	c.ServeJSON()
 }
 
 // Delete removes a wishlist entry by ID.
-// DELETE /api/wishlist/:id
+// DELETE /api/wishlist/:id — returns 204 No Content on success.
 func (c *WishlistAPIController) Delete() {
 	id := c.Ctx.Input.Param(":id")
 
@@ -132,7 +131,6 @@ func (c *WishlistAPIController) Delete() {
 		return
 	}
 
-	items := services.GetWishlistService().GetAll(c.sessionUsername())
-	c.Data["json"] = utils.OKResponse(items)
-	c.ServeJSON()
+	// 204 No Content — deletion succeeded, nothing to return.
+	c.Ctx.Output.SetStatus(204)
 }

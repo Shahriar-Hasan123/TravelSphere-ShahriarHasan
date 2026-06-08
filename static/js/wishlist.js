@@ -1,11 +1,10 @@
 // Handles Save and Delete AJAX on the wishlist page.
-// Only #wishlist-rows is replaced - never a full page reload.
+// Only #wishlist-rows is replaced — never a full page reload.
 
 (function () {
   const container = document.getElementById('wishlist-rows');
   if (!container) return;
 
-  // Delegate all clicks inside the wishlist container.
   container.addEventListener('click', function (e) {
     const row = e.target.closest('tr[data-id]');
     if (!row) return;
@@ -27,10 +26,17 @@
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ note, status }),
     })
-      .then(handleResponse)
-      .then(function (json) {
-        renderRows(json.data);
-        notifyDashboard();
+      .then(function (res) {
+        return res.json().then(function (json) {
+          if (!res.ok) throw new Error(json.message || 'Update failed');
+          return json;
+        });
+      })
+      .then(function () {
+        // PUT returns only the updated item — fetch the full list to re-render.
+        return fetchAndRender();
+      })
+      .then(function () {
         showSuccess('✓ Saved successfully!');
       })
       .catch(showError);
@@ -40,21 +46,29 @@
     const id = row.dataset.id;
 
     fetch('/api/wishlist/' + encodeURIComponent(id), { method: 'DELETE' })
-      .then(handleResponse)
-      .then(function (json) {
-        renderRows(json.data);
-        notifyDashboard();
+      .then(function (res) {
+        if (res.status === 204) {
+          // 204 No Content — success, fetch the updated list.
+          return fetchAndRender();
+        }
+        return res.json().then(function (json) {
+          throw new Error(json.message || 'Delete failed');
+        });
+      })
+      .then(function () {
         showSuccess('✓ Deleted successfully!');
       })
       .catch(showError);
   }
 
-  // handleResponse rejects the promise on non-2xx status.
-  function handleResponse(res) {
-    return res.json().then(function (json) {
-      if (!res.ok) throw new Error(json.message || 'Request failed');
-      return json;
-    });
+  // fetchAndRender fetches the current wishlist and re-renders #wishlist-rows.
+  function fetchAndRender() {
+    return fetch('/api/wishlist')
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        renderRows(json.data || []);
+        notifyDashboard();
+      });
   }
 
   // renderRows rebuilds the entire tbody from the updated items array.
@@ -114,9 +128,6 @@
   }
 
   function notifyDashboard() {
-    // Persist the event marker so dashboard pages refreshed via back button
-    // can also pick up the latest wishlist changes.
-    sessionStorage.setItem('wishlist-updated', String(Date.now()));
     window.dispatchEvent(new CustomEvent('wishlist-updated'));
     refreshDestList();
   }
@@ -135,7 +146,6 @@
             '<a href="/countries">Browse countries</a> to get started.</p></div>';
           return;
         }
-
         destList.innerHTML = items.map(function (item) {
           const note = item.Note
             ? '<span class="dest-row-note">&middot; ' + escHtml(item.Note) + '</span>'
@@ -144,7 +154,7 @@
             '<div class="dest-row">' +
               '<span class="dest-row-name">' + escHtml(item.CountryName) + '</span>' +
               '<span class="dest-row-sep">&mdash;</span>' +
-              '<span class="dest-row-status ' + escHtml(item.Status) + '">' + escHtml(item.Status) + '</span>' +
+              '<span class="dest-row-status ' + item.Status + '">' + item.Status + '</span>' +
               note +
             '</div>'
           );
@@ -165,10 +175,11 @@
     wrap.insertAdjacentHTML('afterbegin',
       '<div class="alert alert-success">' + escHtml(message) + '</div>',
     );
-    // Auto-remove after 1 seconds
+    // Auto-remove after 2 seconds
     setTimeout(function () {
       const alert = wrap.querySelector('.alert-success');
       if (alert) alert.remove();
-    }, 1000);
+    }, 2000);
   }
+
 }());
