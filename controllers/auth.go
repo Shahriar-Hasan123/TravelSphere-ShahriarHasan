@@ -1,5 +1,4 @@
-// AuthController handles the login and logout SSR routes. Authentication uses session storage — no database is involved.
-
+// controllers/auth.go
 package controllers
 
 import "github.com/beego/beego/v2/server/web/context"
@@ -8,55 +7,34 @@ type AuthController struct {
 	BaseController
 }
 
-// validCredentials defines the accepted username/password pairs.
-var validCredentials = map[string]string{
-	"beta": "beta123",
-}
-
-// ShowLogin renders the login page (GET /login).
+// ShowLogin renders the login page. Redirects to dashboard if already authenticated.
 func (c *AuthController) ShowLogin() {
-	isLoggedIn, _ := c.Data["isLoggedIn"].(bool)
-	if isLoggedIn {
+	if c.Data["IsLoggedIn"].(bool) {
 		c.Redirect("/dashboard", 302)
 		return
 	}
-
-	// Check if there is a pending redirect target from the auth filter cookie.
-	redirectTo := c.Ctx.GetCookie("redirect_after_login")
-	if redirectTo == "" {
-		redirectTo = c.GetString("redirect_to")
-	}
-
-	c.Data["RedirectTo"] = redirectTo
-	c.Data["ActiveNav"] = ""
+	c.Data["RedirectTo"] = c.Ctx.GetCookie("redirect_after_login")
+	c.Data["ActiveNav"]  = ""
 	c.TplName = "login.tpl"
-	c.Layout = "layout.tpl"
+	c.Layout  = "layout.tpl"
 }
 
-// DoLogin processes POST /login, sets session on success, and redirects or shows an error.
+// DoLogin creates a session for any non-empty username.
 func (c *AuthController) DoLogin() {
-	username := c.GetString("username")
-	password := c.GetString("password")
+	username   := c.GetString("username")
 	redirectTo := c.GetString("redirect_to")
 
-	// Validate credentials against the hardcoded store.
-	expectedPassword, exists := validCredentials[username]
-	if !exists || expectedPassword != password {
-		c.Data["Error"] = "Invalid username or password."
-		c.Data["Username"] = username // Pre-fill username field on error.
+	if username == "" {
+		c.Data["Error"]     = "Please enter a username."
 		c.Data["ActiveNav"] = ""
 		c.TplName = "login.tpl"
-		c.Layout = "layout.tpl"
+		c.Layout  = "layout.tpl"
 		return
 	}
 
-	// Credentials valid — establish session.
 	c.SetSession("username", username)
-
-	// Clear the redirect cookie now that login succeeded.
 	c.Ctx.SetCookie("redirect_after_login", "", -1)
 
-	// Redirect to the originally requested page or default to dashboard.
 	if redirectTo != "" {
 		c.Redirect(redirectTo, 302)
 		return
@@ -64,17 +42,14 @@ func (c *AuthController) DoLogin() {
 	c.Redirect("/dashboard", 302)
 }
 
-// DoLogout destroys the session and redirects to the home page (GET /logout).
+// DoLogout destroys the session and returns the user to the home page.
 func (c *AuthController) DoLogout() {
 	c.DestroySession()
-
-	// Clear any leftover redirect cookie.
 	c.Ctx.SetCookie("redirect_after_login", "", -1)
-
 	c.Redirect("/", 302)
 }
 
-// SessionUsername is a helper used by filters to read the session username
+// SessionUsername reads the authenticated username directly from a filter context.
 func SessionUsername(ctx *context.Context) string {
 	val := ctx.Input.Session("username")
 	if val == nil {
