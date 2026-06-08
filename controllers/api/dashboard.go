@@ -1,15 +1,27 @@
-// DashboardAPIController handles GET /api/dashboard/summary
-
+// DashboardAPIController serves GET /api/dashboard/summary for AJAX refresh.
 package apicontrollers
 
-import beego "github.com/beego/beego/v2/server/web"
+import (
+	"TravelSphere/services"
+	"TravelSphere/utils"
 
-type DashboardAPIController struct{
+	beego "github.com/beego/beego/v2/server/web"
+)
+
+type DashboardAPIController struct {
 	beego.Controller
 }
 
-// Get returns wishlist counts for the dashboard stats panel (stub)
+// Get returns wishlist summary counts for the authenticated user.
 func (c *DashboardAPIController) Get() {
-	c.Data["json"] = map[string]string{"status": "ok", "message": "dashboard stub"}
+	username, _ := c.GetSession("username").(string)
+
+	total, planned, visited := services.NewDashboardService().Summary(username)
+
+	c.Data["json"] = utils.OKResponse(map[string]int{
+		"total":   total,
+		"planned": planned,
+		"visited": visited,
+	})
 	c.ServeJSON()
 }

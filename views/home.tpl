@@ -2,9 +2,9 @@
     <div class="hero-inner">
         <h1 class="hero-title">Discover your next destination</h1>
         <p class="hero-subtitle">
-            Search countries, explore attractions, and curate your personal travel wishlist.
+            Search countries, explore attractions, and curate your
+            personal travel wishlist.
         </p>
-
         <div class="search-block">
             <label class="search-label">WHERE TO NEXT?</label>
             <div class="search-wrap">
@@ -22,35 +22,41 @@
 </section>
 
 <div class="page-body">
-    <!-- Featured destinations -->
     <section class="section">
         <h2 class="section-title">Featured destinations</h2>
         <div class="featured-grid">
-            {{range .FeaturedCountries}}
-            <a href="/countries/{{.Slug}}" class="featured-card">
-                <div class="featured-flag">
-                    <img src="{{.Flag}}" alt="{{.Name}} flag">
-                </div>
-                <div class="featured-info">
-                    <span class="featured-name">{{.Name}}</span>
-                    <span class="featured-meta">{{.Capital}} · {{.Region}}</span>
-                </div>
-            </a>
+            {{if .FeaturedCountries}}
+                {{range .FeaturedCountries}}
+                <a href="/countries/{{.Slug}}" class="featured-card">
+                    <div class="featured-flag">
+                        <img src="{{.Flag}}" alt="{{.Name}} flag" loading="lazy">
+                    </div>
+                    <div class="featured-info">
+                        <span class="featured-name">{{.Name}}</span>
+                        <span class="featured-meta">{{.Capital}} &middot; {{.Region}}</span>
+                    </div>
+                </a>
+                {{end}}
+            {{else}}
+                <p class="no-data">Featured destinations unavailable.</p>
             {{end}}
         </div>
     </section>
 
-    <!-- Popular attractions -->
     <section class="section">
         <h2 class="section-title">Popular attractions</h2>
         <div class="attractions-list">
-            {{range .PopularAttractions}}
-            <div class="attraction-row">
-                <span class="attraction-name">{{.Name}}</span>
-                <span class="attraction-tags">
-                    {{range $i, $tag := .Kinds}}{{if $i}},{{end}}{{$tag}}{{end}}
-                </span>
-            </div>
+            {{if .PopularAttractions}}
+                {{range .PopularAttractions}}
+                <div class="attraction-row">
+                    <span class="attraction-name">{{.Name}}</span>
+                    <span class="attraction-tags">
+                        {{range $i, $tag := .Kinds}}{{if $i}},{{end}}{{$tag}}{{end}}
+                    </span>
+                </div>
+                {{end}}
+            {{else}}
+                <p class="no-data">Attractions unavailable.</p>
             {{end}}
         </div>
     </section>

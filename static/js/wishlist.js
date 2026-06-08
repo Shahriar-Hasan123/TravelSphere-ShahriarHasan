@@ -30,6 +30,7 @@
       .then(handleResponse)
       .then(function (json) {
         renderRows(json.data);
+        notifyDashboard();
         showSuccess('✓ Saved successfully!');
       })
       .catch(showError);
@@ -42,6 +43,7 @@
       .then(handleResponse)
       .then(function (json) {
         renderRows(json.data);
+        notifyDashboard();
         showSuccess('✓ Deleted successfully!');
       })
       .catch(showError);
@@ -109,6 +111,46 @@
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function notifyDashboard() {
+    // Persist the event marker so dashboard pages refreshed via back button
+    // can also pick up the latest wishlist changes.
+    sessionStorage.setItem('wishlist-updated', String(Date.now()));
+    window.dispatchEvent(new CustomEvent('wishlist-updated'));
+    refreshDestList();
+  }
+
+  function refreshDestList() {
+    const destList = document.getElementById('dest-list');
+    if (!destList) return;
+
+    fetch('/api/wishlist')
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        const items = json.data || [];
+        if (items.length === 0) {
+          destList.innerHTML =
+            '<div class="empty-state"><p>No saved destinations yet. ' +
+            '<a href="/countries">Browse countries</a> to get started.</p></div>';
+          return;
+        }
+
+        destList.innerHTML = items.map(function (item) {
+          const note = item.Note
+            ? '<span class="dest-row-note">&middot; ' + escHtml(item.Note) + '</span>'
+            : '';
+          return (
+            '<div class="dest-row">' +
+              '<span class="dest-row-name">' + escHtml(item.CountryName) + '</span>' +
+              '<span class="dest-row-sep">&mdash;</span>' +
+              '<span class="dest-row-status ' + escHtml(item.Status) + '">' + escHtml(item.Status) + '</span>' +
+              note +
+            '</div>'
+          );
+        }).join('');
+      })
+      .catch(function () {});
   }
 
   function showError() {
