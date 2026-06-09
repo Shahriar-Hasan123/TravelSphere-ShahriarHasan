@@ -45,7 +45,6 @@ cp .env.example .env
 # 4. Run the development server
 bee run
 ```
-
 The application will be available at `http://localhost:8080`.
 
 ---
@@ -76,10 +75,7 @@ Managed entirely in memory via a thread-safe service layer (`sync.RWMutex`, `syn
 
 ## URL Slug Format
 
-Destination detail pages use the lowercase country name with spaces replaced by hyphens.
-
 | Country | Slug | URL |
-|---|---|---|
 | Albania | `albania` | `/countries/albania` |
 | United States | `united-states` | `/countries/united-states` |
 | Bangladesh | `bangladesh` | `/countries/bangladesh` |
@@ -202,6 +198,40 @@ go tool cover -func=coverage.out | grep total
 ```
 
 Coverage targets: `utils` 100% · `utils/clients` 95%+ · `services` 95%+ · `filters` 95%+
+
+---
+
+## Docker (optional)
+
+Prerequisites: Docker and docker-compose.
+
+Build image:
+```bash
+docker build -t travelsphere:latest .
+```
+
+Run with docker-compose (reads `.env` for keys):
+```bash
+docker-compose up -d
+```
+
+Standalone run (pass keys via env):
+```bash
+docker run -p 8080:8080 \
+  -e OPENTRIPMAP_API_KEY=your_key \
+  -e WEATHERAPI_KEY=your_key \
+  travelsphere:latest
+```
+
+Verify:
+```bash
+docker logs travelsphere-app
+curl http://localhost:8080
+```
+
+Notes:
+- Ensure `OPENTRIPMAP_API_KEY` and `WEATHERAPI_KEY` are set in your `.env`.
+- See `/.dockerignore` to avoid sending secrets and build artifacts into the image.
 
 ---
 

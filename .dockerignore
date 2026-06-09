@@ -1,0 +1,30 @@
+# Environment files — never bake secrets into the image
+.env
+.env.example
+.env.local
+.env.*.local
+
+# Version control
+.git
+.gitignore
+
+# Documentation
+*.md
+README.md
+
+# Test and coverage artifacts
+*.out
+coverage.out
+*.test
+tests/
+
+# Build artifacts
+bin/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Node (not used but good practice)
+node_modules/
