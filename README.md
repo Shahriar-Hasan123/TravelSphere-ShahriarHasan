@@ -201,21 +201,103 @@ Coverage targets: `utils` 100% · `utils/clients` 95%+ · `services` 95%+ · `fi
 
 ---
 
-## Docker (optional)
+## Docker (Optional)
 
-Prerequisites: Docker and docker-compose.
+**Prerequisites:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) — this includes both Docker and docker-compose.
 
-Build image:
+---
+
+### First Time Setup
+
+**Step 1 — Create your environment file**
+
+Copy the example environment file and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and set your API keys:
+
+```
+OPENTRIPMAP_API_KEY=your_opentripmap_key_here
+WEATHERAPI_KEY=your_weatherapi_key_here
+```
+
+**Step 2 — Build the Docker image**
+
 ```bash
 docker build -t travelsphere:latest .
 ```
 
-Run with docker-compose (reads `.env` for keys):
+This may take a minute the first time while it downloads dependencies.
+
+**Step 3 — Start the application**
+
 ```bash
 docker-compose up -d
 ```
 
-Standalone run (pass keys via env):
+**Step 4 — Open in your browser**
+
+```
+http://localhost:8080
+```
+
+---
+
+### Starting the App (After First Setup)
+
+Every time you want to run the app after the first setup:
+
+```bash
+docker-compose up -d
+```
+
+Then open `http://localhost:8080` in your browser.
+
+---
+
+### Stopping the App
+
+```bash
+docker-compose down
+```
+
+---
+
+### Restarting the App
+
+```bash
+docker-compose restart
+```
+
+---
+
+### Checking Logs (If Something Goes Wrong)
+
+```bash
+docker-compose logs -f
+```
+
+Press `Ctrl + C` to stop watching logs.
+
+---
+
+### Rebuilding After Code Changes
+
+If you change the source code and want to rebuild the image:
+
+```bash
+docker-compose down
+docker build -t travelsphere:latest .
+docker-compose up -d
+```
+
+---
+
+### Standalone Run (Without docker-compose)
+
 ```bash
 docker run -p 8080:8080 \
   -e OPENTRIPMAP_API_KEY=your_key \
@@ -223,16 +305,15 @@ docker run -p 8080:8080 \
   travelsphere:latest
 ```
 
-Verify:
-```bash
-docker logs travelsphere-app
-curl http://localhost:8080
-```
+Then open `http://localhost:8080` in your browser.
 
-Notes:
-- Ensure `OPENTRIPMAP_API_KEY` and `WEATHERAPI_KEY` are set in your `.env`.
-- See `/.dockerignore` to avoid sending secrets and build artifacts into the image.
+---
 
+### Notes
+
+- `OPENTRIPMAP_API_KEY` is required for attractions to load on destination pages.
+- `WEATHERAPI_KEY` is optional — weather panel shows a placeholder if not set.
+- Never commit your `.env` file — it is listed in `.gitignore` and `.dockerignore`.
 ---
 
 ## Git Branching Strategy
