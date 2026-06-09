@@ -14,7 +14,11 @@ type DashboardAPIController struct {
 
 // Get returns wishlist summary counts for the authenticated user.
 func (c *DashboardAPIController) Get() {
-	username, _ := c.GetSession("username").(string)
+	// Check if session exists before trying to access it
+	var username string
+	if c.Ctx.Input.CruSession != nil {
+		username, _ = c.GetSession("username").(string)
+	}
 
 	total, planned, visited := services.NewDashboardService().Summary(username)
 

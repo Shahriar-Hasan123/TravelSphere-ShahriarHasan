@@ -15,14 +15,10 @@ import (
 )
 
 // LoggingFilter returns a Beego filter function that logs each request.
-// It stores the start time in the request context, then after the handler
-// completes it prints method, path, status, and elapsed duration.
 func LoggingFilter(ctx *context.Context) {
 	start := time.Now()
 
 	// Store start time so the after-filter can compute duration.
-	// We use ResponseWriter's WriteHeader hook indirectly — simpler is to
-	// log everything in a single BeforeRouter pass using a deferred call.
 	defer func() {
 		duration := time.Since(start)
 		status := ctx.ResponseWriter.Status
@@ -41,7 +37,6 @@ func LoggingFilter(ctx *context.Context) {
 }
 
 // formatDuration returns a human-readable duration string.
-// Examples: "1.23ms", "450µs", "2.10s"
 func formatDuration(d time.Duration) string {
 	switch {
 	case d >= time.Second:
@@ -51,4 +46,9 @@ func formatDuration(d time.Duration) string {
 	default:
 		return fmt.Sprintf("%dµs", d.Microseconds())
 	}
+}
+
+// nanosecondDuration converts int64 nanoseconds to time.Duration — used in tests.
+func nanosecondDuration(ns int64) time.Duration {
+	return time.Duration(ns)
 }

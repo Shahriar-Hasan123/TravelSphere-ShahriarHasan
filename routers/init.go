@@ -19,23 +19,21 @@ func Init() {
 
 func registerFilters() {
 	// Request logging.
-	beego.InsertFilter("/*", beego.BeforeRouter,
-		func(ctx *context.Context) { filters.LoggingFilter(ctx) },
-	)
+	beego.InsertFilter("/*", beego.BeforeRouter, loggingFilterHandler)
 
 	// Auth for protected SSR routes.
-	beego.InsertFilter("/wishlist", beego.BeforeExec,
-		func(ctx *context.Context) { filters.AuthFilter(ctx) },
-	)
-	beego.InsertFilter("/dashboard", beego.BeforeExec,
-		func(ctx *context.Context) { filters.AuthFilter(ctx) },
-	)
+	beego.InsertFilter("/wishlist", beego.BeforeExec, authFilterHandler)
+	beego.InsertFilter("/dashboard", beego.BeforeExec, authFilterHandler)
 
 	// Auth for wishlist API.
-	beego.InsertFilter("/api/wishlist", beego.BeforeExec,
-		func(ctx *context.Context) { filters.AuthFilter(ctx) },
-	)
-	beego.InsertFilter("/api/wishlist/*", beego.BeforeExec,
-		func(ctx *context.Context) { filters.AuthFilter(ctx) },
-	)
+	beego.InsertFilter("/api/wishlist", beego.BeforeExec, authFilterHandler)
+	beego.InsertFilter("/api/wishlist/*", beego.BeforeExec, authFilterHandler)
+}
+
+func loggingFilterHandler(ctx *context.Context) {
+	filters.LoggingFilter(ctx)
+}
+
+func authFilterHandler(ctx *context.Context) {
+	filters.AuthFilter(ctx)
 }

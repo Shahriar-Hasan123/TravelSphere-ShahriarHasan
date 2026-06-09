@@ -16,10 +16,10 @@ const attractionKinds = "interesting_places,historic,cultural,architecture,museu
 
 // RawPlace holds the fields we extract from a single OpenTripMap place result.
 type RawPlace struct {
-	Name       string  `json:"name"`
-	Kinds      string  `json:"kinds"`       // Comma-separated category tags
-	Dist       float64 `json:"dist"`        // Distance from centre in metres
-	Xid        string  `json:"xid"`         // Unique place identifier
+	Name  string  `json:"name"`
+	Kinds string  `json:"kinds"` // Comma-separated category tags
+	Dist  float64 `json:"dist"`  // Distance from centre in metres
+	Xid   string  `json:"xid"`   // Unique place identifier
 }
 
 // rawPlacesResponse wraps the /radius endpoint response.
@@ -46,6 +46,15 @@ func NewOpenTripMapClient() *OpenTripMapClient {
 		baseURL:    baseURL,
 		apiKey:     os.Getenv("OPENTRIPMAP_API_KEY"),
 		httpClient: &http.Client{Timeout: 10 * time.Second},
+	}
+}
+
+// NewOpenTripMapClientWithURL creates a client with a custom base URL — used in tests.
+func NewOpenTripMapClientWithURL(baseURL, apiKey string) *OpenTripMapClient {
+	return &OpenTripMapClient{
+		baseURL:    baseURL,
+		apiKey:     apiKey,
+		httpClient: &http.Client{},
 	}
 }
 

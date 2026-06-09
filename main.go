@@ -8,11 +8,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var runServer = beego.Run
+
 func main() {
 	// Load .env file into environment variables.
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found — using system environment variables")
 	}
 	routers.Init()
-	beego.Run()
+	runServer()
 }

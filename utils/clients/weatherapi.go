@@ -20,12 +20,12 @@ type RawWeather struct {
 		Name string `json:"name"`
 	} `json:"location"`
 	Current struct {
-		TempC     float64 `json:"temp_c"`
-		TempF     float64 `json:"temp_f"`
+		TempC      float64 `json:"temp_c"`
+		TempF      float64 `json:"temp_f"`
 		FeelsLikeC float64 `json:"feelslike_c"`
-		Humidity  int     `json:"humidity"`
-		WindKph   float64 `json:"wind_kph"`
-		Condition struct {
+		Humidity   int     `json:"humidity"`
+		WindKph    float64 `json:"wind_kph"`
+		Condition  struct {
 			Text string `json:"text"`
 			Icon string `json:"icon"`
 		} `json:"condition"`
@@ -34,12 +34,12 @@ type RawWeather struct {
 		ForecastDay []struct {
 			Date string `json:"date"`
 			Day  struct {
-				MaxTempC  float64 `json:"maxtemp_c"`
-				MinTempC  float64 `json:"mintemp_c"`
-				MaxTempF  float64 `json:"maxtemp_f"`
-				MinTempF  float64 `json:"mintemp_f"`
+				MaxTempC    float64 `json:"maxtemp_c"`
+				MinTempC    float64 `json:"mintemp_c"`
+				MaxTempF    float64 `json:"maxtemp_f"`
+				MinTempF    float64 `json:"mintemp_f"`
 				AvgHumidity float64 `json:"avghumidity"`
-				Condition struct {
+				Condition   struct {
 					Text string `json:"text"`
 					Icon string `json:"icon"`
 				} `json:"condition"`
@@ -65,6 +65,15 @@ func NewWeatherAPIClient() *WeatherAPIClient {
 		baseURL:    baseURL,
 		apiKey:     os.Getenv("WEATHERAPI_KEY"),
 		httpClient: &http.Client{Timeout: 8 * time.Second},
+	}
+}
+
+// NewWeatherAPIClientWithURL creates a client with a custom base URL — used in tests.
+func NewWeatherAPIClientWithURL(baseURL, apiKey string) *WeatherAPIClient {
+	return &WeatherAPIClient{
+		baseURL:    baseURL,
+		apiKey:     apiKey,
+		httpClient: &http.Client{},
 	}
 }
 

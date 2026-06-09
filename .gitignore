@@ -6,10 +6,15 @@ conf/app.conf
 
 # Beego build output
 TravelSphere
+TravelSphere-ShahriarHasan
 
 # Go build cache
 *.test
 *.out
+coverage.out
+*.cover
+*.coverprofile
+routers.cover
 
 # Editor files
 .vscode/

@@ -10,6 +10,17 @@ import (
 
 // AuthFilter is a Beego filter function that enforces session authentication.
 func AuthFilter(ctx *context.Context) {
+	// Check if session exists before trying to access it
+	if ctx.Input.CruSession == nil {
+		if isAPIRequest(ctx) {
+			respondUnauthorized(ctx)
+		} else {
+			ctx.SetCookie("redirect_after_login", ctx.Request.URL.Path, 300)
+			ctx.Redirect(302, "/login")
+		}
+		return
+	}
+
 	username := ctx.Input.Session("username")
 
 	if username != nil && username.(string) != "" {

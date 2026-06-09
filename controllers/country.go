@@ -6,7 +6,6 @@ import (
 	"log"
 )
 
-// CountryController serves the Country Explorer and Destination Detail pages.
 type CountryController struct {
 	BaseController
 }

@@ -17,6 +17,10 @@ type WishlistAPIController struct {
 
 // sessionUsername reads the authenticated username from the Beego session.
 func (c *WishlistAPIController) sessionUsername() string {
+	// Check if session exists before trying to access it
+	if c.Ctx.Input.CruSession == nil {
+		return ""
+	}
 	val := c.GetSession("username")
 	if val == nil {
 		return ""
