@@ -35,9 +35,9 @@ func TestFetchForecast_NoAPIKey(t *testing.T) {
 
 func TestFetchForecast_Success(t *testing.T) {
 	mock := RawWeather{}
-	mock.Location.Name          = "Dhaka"
-	mock.Current.TempC          = 32.5
-	mock.Current.TempF          = 90.5
+	mock.Location.Name = "Dhaka"
+	mock.Current.TempC = 32.5
+	mock.Current.TempF = 90.5
 	mock.Current.Condition.Text = "Sunny"
 	mock.Current.Condition.Icon = "//cdn.weatherapi.com/sunny.png"
 

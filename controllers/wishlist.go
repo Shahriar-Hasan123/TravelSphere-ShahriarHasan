@@ -11,8 +11,8 @@ type WishlistController struct {
 func (c *WishlistController) Get() {
 	username := c.GetSession("username").(string)
 	items := services.GetWishlistService().GetAll(username)
-	c.Data["ActiveNav"]     = "wishlist"
+	c.Data["ActiveNav"] = "wishlist"
 	c.Data["WishlistItems"] = items
 	c.TplName = "wishlist.tpl"
-	c.Layout  = "layout.tpl"
+	c.Layout = "layout.tpl"
 }

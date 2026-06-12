@@ -75,7 +75,7 @@ func deriveTravelAdvice(raw *clients.RawWeather) string {
 	cond := strings.ToLower(raw.Current.Condition.Text)
 	temp := raw.Current.TempC
 	wind := raw.Current.WindKph
-	hum  := raw.Current.Humidity
+	hum := raw.Current.Humidity
 
 	var advice []string
 

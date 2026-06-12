@@ -14,21 +14,21 @@ func (c *AuthController) ShowLogin() {
 		return
 	}
 	c.Data["RedirectTo"] = c.Ctx.GetCookie("redirect_after_login")
-	c.Data["ActiveNav"]  = ""
+	c.Data["ActiveNav"] = ""
 	c.TplName = "login.tpl"
-	c.Layout  = "layout.tpl"
+	c.Layout = "layout.tpl"
 }
 
 // DoLogin creates a session for any non-empty username.
 func (c *AuthController) DoLogin() {
-	username   := c.GetString("username")
+	username := c.GetString("username")
 	redirectTo := c.GetString("redirect_to")
 
 	if username == "" {
-		c.Data["Error"]     = "Please enter a username."
+		c.Data["Error"] = "Please enter a username."
 		c.Data["ActiveNav"] = ""
 		c.TplName = "login.tpl"
-		c.Layout  = "layout.tpl"
+		c.Layout = "layout.tpl"
 		return
 	}
 

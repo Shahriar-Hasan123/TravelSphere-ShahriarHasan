@@ -28,8 +28,8 @@ func mockAttractionServer(places []clients.RawPlace) *httptest.Server {
 func TestGetAttractionsByCoords_Success(t *testing.T) {
 	places := []clients.RawPlace{
 		{Name: "Eiffel Tower", Kinds: "architecture,historic"},
-		{Name: "Louvre",       Kinds: "museums"},
-		{Name: "X",            Kinds: "misc"}, // too short — should be filtered
+		{Name: "Louvre", Kinds: "museums"},
+		{Name: "X", Kinds: "misc"}, // too short — should be filtered
 	}
 
 	server := mockAttractionServer(places)
@@ -75,9 +75,9 @@ func TestParseKinds(t *testing.T) {
 		expected []string
 	}{
 		{"architecture,historic", []string{"architecture", "historic"}},
-		{"interesting_places",    []string{"interesting places"}},
-		{"",                      []string{}},
-		{"museums,,historic",     []string{"museums", "historic"}},
+		{"interesting_places", []string{"interesting places"}},
+		{"", []string{}},
+		{"museums,,historic", []string{"museums", "historic"}},
 	}
 
 	for _, tt := range tests {

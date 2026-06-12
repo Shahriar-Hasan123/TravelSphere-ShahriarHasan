@@ -19,7 +19,7 @@ func TestFetchAll_Success(t *testing.T) {
 	mock := []RawCountry{
 		{Population: 2837743, Region: "Europe"},
 	}
-	mock[0].Name.Common   = "Albania"
+	mock[0].Name.Common = "Albania"
 	mock[0].Name.Official = "Republic of Albania"
 
 	server := mockRestCountriesServer(200, mock)

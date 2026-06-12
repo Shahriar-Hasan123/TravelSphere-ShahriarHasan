@@ -53,11 +53,12 @@ The application will be available at `http://localhost:8080`.
 
 | Variable | Required | Description |
 |---|---|---|
-| `RESTCOUNTRIES_BASE_URL` | No | Defaults to `https://restcountries.com/v3.1` |
+| `RESTCOUNTRIES_BASE_URL` | No | Defaults to `https://api.restcountries.com/countries/v5` |
+| `RESTCOUNTRIES_API_KEY` | **Yes** | API key for REST Countries from [restcountries.com](https://restcountries.com/) |
 | `OPENTRIPMAP_BASE_URL` | No | Defaults to `https://api.opentripmap.com/0.1/en` |
 | `OPENTRIPMAP_API_KEY` | **Yes** | Get a free key at [opentripmap.org](https://dev.opentripmap.org/product) |
 | `WEATHERAPI_BASE_URL` | No | Defaults to `http://api.weatherapi.com/v1` |
-| `WEATHERAPI_KEY` | Yes | Get a free key at [weatherapi.com](https://www.weatherapi.com/) |
+| `WEATHERAPI_KEY` | **Yes** | Get a free key at [weatherapi.com](https://www.weatherapi.com/) |
 
 ---
 

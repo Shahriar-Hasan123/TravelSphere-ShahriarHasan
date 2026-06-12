@@ -3,11 +3,11 @@ package models
 
 // ForecastDay holds weather data for a single forecast day.
 type ForecastDay struct {
-	Date     string  
-	MaxTempC float64
-	MinTempC float64
-	MaxTempF float64
-	MinTempF float64
+	Date      string
+	MaxTempC  float64
+	MinTempC  float64
+	MaxTempF  float64
+	MinTempF  float64
 	Condition string
 	Icon      string
 }

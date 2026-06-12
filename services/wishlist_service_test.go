@@ -14,7 +14,7 @@ func newTestWishlistService() *WishlistService {
 }
 
 func TestWishlistCreate(t *testing.T) {
-	svc  := newTestWishlistService()
+	svc := newTestWishlistService()
 	item := svc.Create("beta", "France", "Visit Eiffel Tower", "Planned")
 
 	if item.ID == "" {
@@ -35,7 +35,7 @@ func TestWishlistCreate(t *testing.T) {
 }
 
 func TestWishlistGetAll_Empty(t *testing.T) {
-	svc   := newTestWishlistService()
+	svc := newTestWishlistService()
 	items := svc.GetAll("beta")
 
 	if len(items) != 0 {
@@ -57,7 +57,7 @@ func TestWishlistGetAll_ReturnsCopy(t *testing.T) {
 }
 
 func TestWishlistUpdate_Success(t *testing.T) {
-	svc  := newTestWishlistService()
+	svc := newTestWishlistService()
 	item := svc.Create("beta", "Japan", "", "Planned")
 
 	updated, ok := svc.Update("beta", item.ID, "Cherry blossom tour", "Visited")
@@ -82,7 +82,7 @@ func TestWishlistUpdate_NotFound(t *testing.T) {
 }
 
 func TestWishlistDelete_Success(t *testing.T) {
-	svc  := newTestWishlistService()
+	svc := newTestWishlistService()
 	item := svc.Create("beta", "Germany", "", "Planned")
 
 	ok := svc.Delete("beta", item.ID)
@@ -133,8 +133,8 @@ func TestWishlistExists_DifferentUser(t *testing.T) {
 
 func TestWishlistSummary(t *testing.T) {
 	svc := newTestWishlistService()
-	svc.Create("beta", "France",     "", "Planned")
-	svc.Create("beta", "Japan",      "", "Planned")
+	svc.Create("beta", "France", "", "Planned")
+	svc.Create("beta", "Japan", "", "Planned")
 	svc.Create("beta", "Bangladesh", "", "Visited")
 
 	total, planned, visited := svc.Summary("beta")
@@ -162,10 +162,10 @@ func TestWishlistSummary_Empty(t *testing.T) {
 func TestWishlistPerUserIsolation(t *testing.T) {
 	svc := newTestWishlistService()
 	svc.Create("alice", "France", "", "Planned")
-	svc.Create("beta",  "Japan",  "", "Planned")
+	svc.Create("beta", "Japan", "", "Planned")
 
 	aliceItems := svc.GetAll("alice")
-	betaItems  := svc.GetAll("beta")
+	betaItems := svc.GetAll("beta")
 
 	if len(aliceItems) != 1 || aliceItems[0].CountryName != "France" {
 		t.Error("alice should only see France")

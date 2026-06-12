@@ -12,18 +12,18 @@ type HomeController struct {
 
 // staticAttractions is the fallback list when OpenTripMap is unavailable.
 var staticAttractions = []models.Attraction{
-	{Name: "Eiffel Tower",       Kinds: []string{"architecture", "historic"}},
-	{Name: "Grand Canyon",       Kinds: []string{"natural"}},
+	{Name: "Eiffel Tower", Kinds: []string{"architecture", "historic"}},
+	{Name: "Grand Canyon", Kinds: []string{"natural"}},
 	{Name: "Sydney Opera House", Kinds: []string{"architecture", "theatre"}},
-	{Name: "Colosseum",          Kinds: []string{"historic", "architecture"}},
+	{Name: "Colosseum", Kinds: []string{"historic", "architecture"}},
 }
 
 // famousCoords holds coordinates for globally recognised attraction hotspots.
 // Used to seed the home page Popular attractions section from OpenTripMap.
 var famousCoords = []struct{ lat, lon float64 }{
-	{48.8584, 2.2945},   // Paris — Eiffel Tower area
+	{48.8584, 2.2945},    // Paris — Eiffel Tower area
 	{36.1069, -112.1129}, // Grand Canyon
-	{41.8902, 12.4922},  // Rome — Colosseum area
+	{41.8902, 12.4922},   // Rome — Colosseum area
 	{-33.8568, 151.2153}, // Sydney Opera House area
 }
 
@@ -39,18 +39,18 @@ func (c *HomeController) Get() {
 
 	attractions := fetchHomeAttractions()
 
-	c.Data["ActiveNav"]          = "home"
-	c.Data["FeaturedCountries"]  = featured
+	c.Data["ActiveNav"] = "home"
+	c.Data["FeaturedCountries"] = featured
 	c.Data["PopularAttractions"] = attractions
 	c.TplName = "home.tpl"
-	c.Layout  = "layout.tpl"
+	c.Layout = "layout.tpl"
 }
 
 // fetchHomeAttractions attempts to load real attractions from OpenTripMap. Falls back to the static list on any error so the home page never breaks.
 func fetchHomeAttractions() []models.Attraction {
 	attractionSvc := services.NewAttractionService()
-	seen          := map[string]bool{}
-	var results   []models.Attraction
+	seen := map[string]bool{}
+	var results []models.Attraction
 
 	for _, coord := range famousCoords {
 		list, err := attractionSvc.GetAttractionsByCoords(coord.lat, coord.lon)

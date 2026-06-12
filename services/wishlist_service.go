@@ -70,7 +70,7 @@ func (s *WishlistService) Update(username, id, note, status string) (models.Wish
 	items := s.store[username]
 	for i, item := range items {
 		if item.ID == id {
-			items[i].Note   = note
+			items[i].Note = note
 			items[i].Status = models.WishlistStatus(status)
 			s.store[username] = items
 			return items[i], true

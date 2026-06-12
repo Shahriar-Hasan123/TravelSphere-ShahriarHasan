@@ -5,7 +5,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - RESTCOUNTRIES_BASE_URL=https://restcountries.com/v3.1
+      - RESTCOUNTRIES_BASE_URL=https://api.restcountries.com/countries/v5
+      - RESTCOUNTRIES_API_KEY=${RESTCOUNTRIES_API_KEY}
       - OPENTRIPMAP_BASE_URL=https://api.opentripmap.com/0.1/en
       - OPENTRIPMAP_API_KEY=${OPENTRIPMAP_API_KEY}
       - WEATHERAPI_BASE_URL=http://api.weatherapi.com/v1
