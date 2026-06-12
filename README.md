@@ -221,6 +221,7 @@ cp .env.example .env
 Open `.env` and set your API keys:
 
 ```
+RESTCOUNTRIES_API_KEY=your_restcountries_key_here
 OPENTRIPMAP_API_KEY=your_opentripmap_key_here
 WEATHERAPI_KEY=your_weatherapi_key_here
 ```
@@ -301,6 +302,7 @@ docker-compose up -d
 
 ```bash
 docker run -p 8080:8080 \
+  -e RESTCOUNTRIES_API_KEY=your_key \
   -e OPENTRIPMAP_API_KEY=your_key \
   -e WEATHERAPI_KEY=your_key \
   travelsphere:latest
